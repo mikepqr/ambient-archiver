@@ -63,7 +63,7 @@ def daterange(start, end, delta=timedelta(days=1)):
 def main():
     # ask for 24 hours starting just before midnight, which seems to result in
     # more consistent return values from API
-    start = datetime(2020, 12, 28, 23, 59, 59)
+    start = datetime(2020, 12, 31, 23, 59, 59)
     # API returns no data before this
     end = datetime(2020, 1, 1)
     for dt in daterange(start, end, delta=timedelta(days=-1)):

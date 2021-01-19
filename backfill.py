@@ -3,7 +3,7 @@ import json
 import logging
 import os
 import time
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
 import requests
 from requests.adapters import HTTPAdapter
@@ -19,6 +19,12 @@ PARAMS = {
     "applicationKey": os.environ["APPLICATION_KEY"],
     "limit": LIMIT,
 }
+
+
+def last_midnight_utc():
+    """Returns a datetime for the most recent 23:59 UTC."""
+    now = datetime.now(tz=timezone.utc)
+    return datetime(now.year, now.month, now.day - 1, 23, 59)
 
 
 def session():
@@ -63,7 +69,7 @@ def daterange(start, end, delta=timedelta(days=1)):
 def main():
     # ask for 24 hours starting just before midnight, which seems to result in
     # more consistent return values from API
-    start = datetime(2020, 12, 31, 23, 59, 59)
+    start = last_midnight_utc()
     # API returns no data before this
     end = datetime(2020, 1, 1)
     for dt in daterange(start, end, delta=timedelta(days=-1)):

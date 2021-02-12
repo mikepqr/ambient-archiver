@@ -76,5 +76,5 @@ def overwrite_data_since_midnight():
     prettydate = f"{now_utc().date().isoformat()}"
     data = getdata_since_midnight()
     logging.warning(f"Got {len(data)} records for {prettydate}. Expected up to {LIMIT}")
-    with gzip.open("data/" + prettydate + ".json.gz", "wt", encoding="ascii") as f:
+    with gzip.open(prettydate + ".json.gz", "wt", encoding="ascii") as f:
         f.write(json.dumps(data))

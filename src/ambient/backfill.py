@@ -16,8 +16,8 @@ def daterange(start, end, delta=timedelta(days=1)):
         dt += delta
 
 
-def checklength(dir="data/"):
-    for jgz in sorted(glob.glob(dir + "*.json.gz")):
+def checklength():
+    for jgz in sorted(glob.glob("*.json.gz")):
         with gzip.open(jgz, "rt", encoding="ascii") as f:
             data = json.load(f)
             if len(data) != 288:
@@ -29,7 +29,7 @@ def backfill(end=datetime(2020, 1, 1, tzinfo=timezone.utc)):
     start = last_midnight_utc()
     for dt in daterange(start, end, delta=timedelta(days=-1)):
         prettydate = f"{dt.date().isoformat()}"
-        if os.path.exists("data/" + prettydate + ".json.gz"):
+        if os.path.exists(prettydate + ".json.gz"):
             logging.info(f"Skipping {prettydate}. File exists")
         else:
             data = getdata(dt)
@@ -37,9 +37,7 @@ def backfill(end=datetime(2020, 1, 1, tzinfo=timezone.utc)):
                 logging.warning(
                     f"Got {len(data)} records for {prettydate}. Expected {LIMIT}"
                 )
-            with gzip.open(
-                "data/" + prettydate + ".json.gz", "wt", encoding="ascii"
-            ) as f:
+            with gzip.open(prettydate + ".json.gz", "wt", encoding="ascii") as f:
                 f.write(json.dumps(data))
 
 

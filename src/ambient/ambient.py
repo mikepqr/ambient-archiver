@@ -1,3 +1,4 @@
+import glob
 import gzip
 import json
 import logging
@@ -9,6 +10,12 @@ from datetime import datetime, timezone
 import requests
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
+
+try:
+    import pandas as pd
+except ImportError:
+    logging.debug("Unable to import pandas (required for ambient.loaddf)")
+
 
 REST_API_BASE = "https://api.ambientweather.net/v1"
 RETRIES = 5
@@ -78,3 +85,13 @@ def overwrite_data_since_midnight():
     logging.warning(f"Got {len(data)} records for {prettydate}. Expected up to {LIMIT}")
     with gzip.open(prettydate + ".json.gz", "wt", encoding="ascii") as f:
         f.write(json.dumps(data))
+
+
+def loaddf():
+    jsonfiles = glob.glob("*.json.gz")
+    df = pd.concat(pd.read_json(jsonfile) for jsonfile in jsonfiles)
+    df.index = pd.to_datetime(df.date)
+    df.index = df.index.tz_convert("US/Pacific")
+    df = df.sort_index()
+    df = df[~df.duplicated()]
+    return df

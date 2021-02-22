@@ -8,7 +8,7 @@ long_description = (here / "README.md").read_text(encoding="utf-8")
 
 setup(
     name="ambient-archiver",
-    version="0.0.1",
+    version="0.0.2",
     description="Archive your data from ambientweather.net",
     long_description=long_description,
     long_description_content_type="text/markdown",
@@ -36,7 +36,8 @@ setup(
     entry_points={
         "console_scripts": [
             "ambient-backfill=ambient.backfill:backfill_script",
-            "ambient-osm=ambient.ambient:overwrite_data_since_midnight",
+            "ambient-osm=ambient.ambient:overwrite_since_midnight",
+            "ambient-oy=ambient.ambient:overwrite_yesterday",
         ],
     },
     project_urls={

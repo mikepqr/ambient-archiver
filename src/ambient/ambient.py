@@ -73,16 +73,21 @@ def getdata(end: datetime, start=None):
     return r.json()
 
 
-def getdata_since_midnight():
+def overwrite_since_midnight():
     start = last_midnight_utc()
     end = now_utc()
-    return getdata(end=end, start=start)
-
-
-def overwrite_data_since_midnight():
-    prettydate = f"{now_utc().date().isoformat()}"
-    data = getdata_since_midnight()
+    data = getdata(end=end, start=start)
+    prettydate = f"{end.date().isoformat()}"
     logging.warning(f"Got {len(data)} records for {prettydate}. Expected up to {LIMIT}")
+    with gzip.open(prettydate + ".json.gz", "wt", encoding="ascii") as f:
+        f.write(json.dumps(data))
+
+
+def overwrite_yesterday():
+    end = last_midnight_utc()
+    data = getdata(end=end)
+    prettydate = f"{end.date().isoformat()}"
+    logging.warning(f"Got {len(data)} records for {prettydate}. Expected {LIMIT}")
     with gzip.open(prettydate + ".json.gz", "wt", encoding="ascii") as f:
         f.write(json.dumps(data))
 

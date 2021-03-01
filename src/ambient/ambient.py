@@ -5,7 +5,7 @@ import logging
 import math
 import os
 import time
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 
 import requests
 from requests.adapters import HTTPAdapter
@@ -31,8 +31,8 @@ PARAMS = {
 
 def last_midnight_utc():
     """Returns a datetime for the most recent 23:59 UTC."""
-    now = datetime.now(tz=timezone.utc)
-    return datetime(now.year, now.month, now.day - 1, 23, 59, tzinfo=timezone.utc)
+    ago_24h = datetime.now(tz=timezone.utc) - timedelta(days=1)
+    return datetime(ago_24h.year, ago_24h.month, ago_24h.day, 23, 59, tzinfo=timezone.utc)
 
 
 def now_utc():

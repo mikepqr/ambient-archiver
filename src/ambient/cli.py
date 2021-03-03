@@ -10,21 +10,16 @@ from ambient.backfill import backfill as _backfill
 
 @click.group()
 @click.version_option()
-@click.option(
-    "--verbose",
-    "-v",
-    help="Print first and last record",
-    is_flag=True,
-)
+@click.option("--quiet", "-q", help="Be quiet", is_flag=True, default=False)
 @click.option("--application-key", required=True)
 @click.option("--api-key", required=True)
 @click.option("--mac", required=True)
 @click.pass_context
-def cli(ctx, verbose, application_key, api_key, mac):
-    if verbose:
-        logging.basicConfig(level=logging.INFO, format="%(message)s")
-    else:
+def cli(ctx, quiet, application_key, api_key, mac):
+    if quiet:
         logging.basicConfig(level=logging.WARN, format="%(message)s")
+    else:
+        logging.basicConfig(level=logging.INFO, format="%(message)s")
     auth_data = {
         "application_key": application_key,
         "api_key": api_key,

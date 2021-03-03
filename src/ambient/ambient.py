@@ -72,16 +72,25 @@ def getdata(end: datetime, start=None, context=None):
     return r.json()
 
 
+def log_head_tail(data):
+    try:
+        logging.info(
+            f"Got {len(data)} records from {data[-1]['date']} to {data[0]['date']}"
+        )
+    except KeyError:
+        logging.info(f"{data}")
+        raise ValueError("Data format invalid. Check api_key, application_key and mac.")
+
+
 def today(context=None):
     """Overwrite <today>.json.gz with all data since 00:00 UTC"""
     start = last_midnight_utc()
     end = now_utc()
     data = getdata(end=end, start=start, context=context)
     prettydate = f"{end.date().isoformat()}"
-    logging.info(f"Got {len(data)} records for {prettydate}. Expected up to {LIMIT}")
+    log_head_tail(data)
     with gzip.open(prettydate + ".json.gz", "wt", encoding="ascii") as f:
         f.write(json.dumps(data))
-    logging.info(f"From {data[-1]['date']} to {data[0]['date']}")
 
 
 def yesterday(context=None):
@@ -89,7 +98,6 @@ def yesterday(context=None):
     end = last_midnight_utc()
     data = getdata(end=end, context=context)
     prettydate = f"{end.date().isoformat()}"
-    logging.info(f"Got {len(data)} records for {prettydate}. Expected {LIMIT}")
+    log_head_tail(data)
     with gzip.open(prettydate + ".json.gz", "wt", encoding="ascii") as f:
         f.write(json.dumps(data))
-    logging.info(f"From {data[-1]['date']} to {data[0]['date']}")

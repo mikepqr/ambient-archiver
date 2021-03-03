@@ -6,7 +6,7 @@ Download and analyse your data from ambientweather.net
 
     pip install ambient-archiver
 
-installs `ambient` in your PATH.
+This installs `ambient` in your PATH.
 
 ## Usage
 
@@ -15,6 +15,8 @@ installs `ambient` in your PATH.
 ambientweather.net](https://ambientweather.net/account). You can omit the
 options by setting `AMBIENT_API_KEY` `AMBIENT_APPLICATION_KEY` and `AMBIENT_MAC`
 in your environment.
+
+See `ambient --help` for more.
 
 ### Commands
 

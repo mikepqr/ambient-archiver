@@ -24,27 +24,18 @@ def checklength():
                 print(f"Got {len(data):>3d} records for {jgz}. Expected {LIMIT}")
 
 
-def backfill(end=datetime(2020, 1, 1, tzinfo=timezone.utc)):
+def backfill(context=None, end=datetime(2020, 1, 1, tzinfo=timezone.utc)):
     """Backfills data from enddt to the most recent midnight UTC."""
     start = last_midnight_utc()
     for dt in daterange(start, end, delta=timedelta(days=-1)):
         prettydate = f"{dt.date().isoformat()}"
         if os.path.exists(prettydate + ".json.gz"):
-            logging.info(f"Skipping {prettydate}. File exists")
+            logging.warning(f"Skipping {prettydate}. File exists")
         else:
-            data = getdata(dt)
+            data = getdata(dt, context=context)
             if len(data) != 288:
                 logging.warning(
                     f"Got {len(data)} records for {prettydate}. Expected {LIMIT}"
                 )
             with gzip.open(prettydate + ".json.gz", "wt", encoding="ascii") as f:
                 f.write(json.dumps(data))
-
-
-def backfill_script():
-    logging.basicConfig(level=logging.INFO)
-    backfill()
-
-
-if __name__ == "__main__":
-    backfill_script()

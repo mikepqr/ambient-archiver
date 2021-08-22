@@ -32,6 +32,17 @@ See `ambient --help` for more.
 `backfill` does not overwrite files. You must manually delete them if
 you want fresh copies for some reason. `today` and `yesterday` overwrite.
 
+### Shell completion
+
+You can optionally enable shell completion by running the appropriate command
+for your shell:
+
+```bash
+eval "$(_AMBIENT_COMPLETE=bash_source ambient)" >> ~/.bashrc # bash
+eval "$(_AMBIENT_COMPLETE=zsh_source ambient)" >> ~/.zshrc  # zsh
+_AMBIENT_COMPLETE=fish_source foo-bar > ~/.config/fish/completions/ambient.fish  # fish
+```
+
 ## Automation with Github Actions
 
 1. Create a new repository, run `ambient backfill` then check everything in

@@ -78,7 +78,7 @@ def log_head_tail(data):
             f"Got {len(data)} records from {data[-1]['date']} to {data[0]['date']}"
         )
     except IndexError:
-        logging.warn(f"Got no records.")
+        raise ValueError(f"Got no records.")
     except KeyError:
         logging.info(f"{data}")
         raise ValueError("Data format invalid. Check api_key, application_key and mac.")

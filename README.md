@@ -66,11 +66,11 @@ _AMBIENT_COMPLETE=fish_source foo-bar > ~/.config/fish/completions/ambient.fish 
             runs-on: ubuntu-latest
             steps:
             - name: Check out repo
-              uses: actions/checkout@v2
+              uses: actions/checkout@v3
             - name: Set up Python
-              uses: actions/setup-python@v2
+              uses: actions/setup-python@v4
               with:
-                python-version: 3.8
+                python-version: 3.10
             - name: Install Python dependencies
               run: |
                 pip install ambient-archiver
@@ -109,11 +109,11 @@ _AMBIENT_COMPLETE=fish_source foo-bar > ~/.config/fish/completions/ambient.fish 
             runs-on: ubuntu-latest
             steps:
             - name: Check out repo
-              uses: actions/checkout@v2
+              uses: actions/checkout@v3
             - name: Set up Python
-              uses: actions/setup-python@v2
+              uses: actions/setup-python@v4
               with:
-                python-version: 3.8
+                python-version: 3.10
             - name: Install Python dependencies
               run: |
                 pip install ambient-archiver
